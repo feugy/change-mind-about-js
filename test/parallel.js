@@ -16,6 +16,10 @@ describe('Parallel', () => {
     }
   }
 
+  let tasks = [
+    new Deferred('1', 150), new Deferred('2', 75), new Deferred('3', 300)
+  ];
+
   it('should be ran without parallel', done => {
     new Parallel().run(err => {
       expect(err).not.to.exist;
@@ -23,14 +27,21 @@ describe('Parallel', () => {
     });
   });
 
-  it.skip('should be be serialized', () => {
+  it('should be be serialized', () => {
+    expect(new Parallel({tasks, field: 'data'}, new Task('end')).toString()).to.equal(
+      `Parallel ((Deferred 1) | (Deferred 2) | (Deferred 3))`);
+  });
+
+  it('should be be displayed', () => {
+    let tasks = [
+      new Task('1', new Task('2')), new Task('A', new Task('B', new Task('C'))), new Task('alpha')
+    ];
+    let job = new Parallel({tasks, field: 'data'}, new Task('next', new Task('end')));
+    expect(Parallel.display(job)).to.equal(
+      `Parallel ((Task 1 > Task 2) | (Task A > Task B > Task C) | (Task alpha)) > Task next > Task end`);
   });
 
   it('should be multiple tasks in parallel', done => {
-    let tasks = [
-      new Deferred('1', 150), new Deferred('2', 75), new Deferred('3', 300)
-    ];
-
     new Parallel({tasks, field: 'data'}).run(err => {
       expect(err).not.to.exist;
       let start = tasks[0].start;

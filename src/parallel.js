@@ -24,7 +24,7 @@ export class Parallel extends Task {
    * @return {String} representation for this task
    */
   toString() {
-    let subTasks = this.tasks.map(t => t.toString()).join(' | ');
+    let subTasks = this.tasks.map(t => `(${Parallel.display(t)})`).join(' | ');
     return `${super.toString()} (${subTasks})`;
   }
 
