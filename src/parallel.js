@@ -20,6 +20,15 @@ export class Parallel extends Task {
   }
 
   /**
+   * Overrides the string serialization to represent parallel subtasks
+   * @return {String} representation for this task
+   */
+  toString() {
+    let subTasks = this.tasks.map(t => t.toString()).join(' | ');
+    return `${super.toString()} (${subTasks})`;
+  }
+
+  /**
    * @protected
    * Run sub tasks in parallel and wait for them
    * All results will be concatenated into the specified field
@@ -50,15 +59,6 @@ export class Parallel extends Task {
         }
       });
     }
-  }
-
-  /**
-   * Overrides the string serialization to represent parallel subtasks
-   * @return {String} representation for this task
-   */
-  toString() {
-    let subTasks = this.tasks.map(t => t.toString()).join(' | ');
-    return `${super.toString()} (${subTasks})`;
   }
 
 }

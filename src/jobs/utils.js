@@ -19,13 +19,14 @@ export function decode(text) {
 
 /**
  * Generate parameters for the ChuckNorrisFacts.fr API is expected
- * @param {Object} params - expected parameters
+ * @param {Object} [{}] params - expected parameters
  * @param {Number} params.page - 0-based index of the requested page
- * @param {Number} params.number - number of quote retrieved, default to maxQuotes
+ * @param {Number} params.size - number of quote retrieved, default to maxQuotes
  * @return {Object} formated parameters
  */
-export function generateParams({page, number= maxQuotes}) {
+export function generateParams(params = {}) {
+  let {page, size= maxQuotes} = params;
   return {
-    data: `type:txt;nb:${number};page:${page}`
+    data: `type:txt;nb:${size};page:${page}`
   };
 }

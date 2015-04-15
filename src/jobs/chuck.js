@@ -3,6 +3,11 @@ import {Parallel} from '../parallel';
 import {Task as BaseTask} from '../task';
 import nbQuotes, * as utils from './utils';
 
+var req = request.defaults({
+  timeout: 10000,
+  pool: {maxSockets: 10}
+});
+
 /**
  * Sort retrieved quotations by using their score.
  * Quotations must be stored in an array under the 'data' attribute
@@ -43,32 +48,34 @@ export class Crawler extends BaseTask {
 
   /**
    * Builds a crawler task
+   * @param {Object} options used to build this crawler
+   * @param {Number} options.page 1-based page retrieved
+   * @param {Number} options.size number of quotations retrieved in page
+   * @param {String|Boolean} [false] options.proxy - optionnal proxy used
    * @param {Number} page that will be requested
    * @param {Task} next task that will be invoked
    */
-  constructor(page, ...args) {
+  constructor(options, ...args) {
+    let {page} = options;
     args.unshift(`page ${page}`);
     super(...args);
-    Object.assign(this, {page});
+    Object.assign(this, options);
   }
 
   /**
    * @protected
    * Make the HTTP call and return quotations
    *
-   * @param {Object} params - parameters passed to this task
-   * @param {String} [false] params.proxy - optionnal proxy used
+   * @param {Object} params - unused
    * @param {End} done - completion callback, invoqued when the task is done
    */
-  _execute({proxy = false}, end) {
-    request({
+  _execute(params, end) {
+    req(Object.assign({
       method: 'GET',
       url: 'http://www.chucknorrisfacts.fr/api/get',
       qs: utils.generateParams(this),
-      json: true,
-      timeout: 10000,
-      proxy
-    }, (err, res, data) => {
+      json: true
+    }, this), (err, res, data) => {
       if (!err) {
         if (res.statusCode !== 200) {
           err = new Error(`unexpected status ${res.statusCode}`);
@@ -93,7 +100,9 @@ export class Crawler extends BaseTask {
 export default function main() {
   let sorter = new Sorter();
   const nbWorkers = 100;
-  let crawlers = Array.from(new Array(nbWorkers), (x, i) => new Crawler(i+1, sorter));
+  let crawlers = Array.from(new Array(nbWorkers), (x, i) =>
+    new Crawler({page: i+1}, sorter)
+  );
 
   console.log(`get quotes per ${nbQuotes} with ${nbWorkers} crawlers...`);
 

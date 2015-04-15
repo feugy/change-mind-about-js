@@ -8,17 +8,6 @@
 export class Task {
 
   /**
-   * Recursively display a bunch of tasks in a string representation
-   * @param {Task} root task displayed
-   * @return {String} containing the root task and subsquent tasks presentation
-   */
-  static display(task) {
-    return task.next?
-      `${task.toString()} > ${Task.display(task.next)}`:
-      task.toString();
-  }
-
-  /**
    * Builds a task with a given name and optionnal following task
    * @param {String} task's name
    * @param {Task} [null] next task that will be invoked
@@ -31,6 +20,15 @@ export class Task {
       start: null,
       success: null
     });
+  }
+
+  /**
+   * Serialized this task in a string
+   * @return {String} representation for this task
+   */
+  toString() {
+    let className = this.constructor.name;
+    return `${className} ${this.name}`.trim();
   }
 
   /**
@@ -77,11 +75,13 @@ export class Task {
   }
 
   /**
-   * Serialized this task in a string
-   * @return {String} representation for this task
+   * Recursively display a bunch of tasks in a string representation
+   * @param {Task} root task displayed
+   * @return {String} containing the root task and subsquent tasks presentation
    */
-  toString() {
-    let className = this.constructor.name;
-    return `${className} ${this.name}`.trim();
+  static display(task) {
+    return task.next?
+      `${task.toString()} > ${Task.display(task.next)}`:
+      task.toString();
   }
 }

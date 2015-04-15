@@ -42,11 +42,11 @@ describe('Chuck Norris\'s Job', () => {
   describe('Crawler', () => {
 
     it('should be serialized into string', () => {
-      expect(new Crawler(10).toString()).to.equal('Crawler page 10');
+      expect(new Crawler({page: 10}).toString()).to.equal('Crawler page 10');
     });
 
     it('should handle API errors', done => {
-      new Crawler(-1).run((err, results) => {
+      new Crawler({page: -1}).run((err, results) => {
         expect(err).to.exist.and.to.have.property('message').that.include('Invalid argument');
         expect(results).not.to.exist;
         done();
@@ -54,12 +54,11 @@ describe('Chuck Norris\'s Job', () => {
     });
 
     it('should return a limited number of quotes', done => {
-      let crawler = new Crawler(1);
-      let number = 2;
-      crawler.number = number;
-      crawler.run((err, results) => {
+      let page = 1;
+      let size = 2;
+      new Crawler({page, size}).run((err, results) => {
         expect(err).not.to.exist;
-        expect(results).to.have.property('data').that.has.lengthOf(number);
+        expect(results).to.have.property('data').that.has.lengthOf(size);
         done();
       });
     });
