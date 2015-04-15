@@ -1,0 +1,26 @@
+{
+  "name": "change-mind-about-js",
+  "version": "1.0.0",
+  "description": "A conference about EcmaScript6 and what it can bring to developers",
+  "scripts": {
+    "test": "gulp test"
+  },
+  "bin": {
+    "pilot": "./bin/pilot.js"
+  },
+  "devDependencies": {
+    "babel-core": "^5.1.2",
+    "chai": "^2.2.0",
+    "gulp": "^3.8.11",
+    "gulp-babel": "^5.1.0",
+    "gulp-mocha": "^2.0.1",
+    "gulp-sourcemaps": "^1.5.1",
+    "gulp-util": "^3.0.4",
+    "mocha": "^2.2.4"
+  },
+  "dependencies": {
+    "babel-runtime": "^5.1.2",
+    "html-entities": "^1.1.2",
+    "request": "^2.55.0"
+  }
+}

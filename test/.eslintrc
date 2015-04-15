@@ -1,0 +1,7 @@
+---
+env:
+  mocha: true
+
+rules:
+  # because with chai we might have: expect(err).not.to.exist
+  no-unused-expressions: 0
