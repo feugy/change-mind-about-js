@@ -101,16 +101,24 @@ export default function main() {
   let sorter = new Sorter();
   const nbWorkers = 100;
   let crawlers = Array.from(new Array(nbWorkers), (x, i) =>
-    new Crawler({page: i+1}, sorter)
+    new Crawler({page: i+1, proxy: 'http://proxy-internet.localnet:3128'}, sorter)
   );
 
-  console.log(`get quotes per ${nbQuotes} with ${nbWorkers} crawlers...`);
+  console.log(`
+
+  get quotes per ${nbQuotes} with ${nbWorkers} crawlers...
+`);
 
   new Parallel({tasks: crawlers, field: 'data'}, sorter).run((err, results) => {
     if (err) {
       return console.error(`unexpected error: ${err.message}`);
     }
     let {data: [{fact, points: score}]=[]} = results;
-    console.log(`best fact found (${score} pts) :\n\n${fact}`);
+    console.log(`
+  best fact found (${score} pts) :
+
+  ${fact}
+
+    `);
   });
 }
