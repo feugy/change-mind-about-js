@@ -14,7 +14,7 @@ export default maxQuotes;
  * @return {String} the decoded text
  */
 export function decode(text) {
-  return entities.decode(text);
+  return entities.decode(text).replace(/<\s*br\s*\/?>/g, '\n');
 }
 
 /**

@@ -29,14 +29,18 @@ export class Sorter extends BaseTask {
    *
    * @param {Object} params - parameters passed to this task
    * @param {Object[]} params.data - sorted quotations
+   * @param {Object[]} params.page - page for which sort is performed
    * @param {End} done - completion callback, invoqued when the task is done
    */
-  _execute({data = []} = {}, end) {
+  _execute({data = [], page = -1} = {}, end) {
     if (!data || !data.length) {
       return end(null, {data: []});
     }
     let best = data.reduce((max, q) => +q.points > +max.points ? q : max);
     best.fact = utils.decode(best.fact);
+    if (page !== -1) {
+      console.log(`for page ${page} (${best.points} pts) : ${best.fact}`);
+    }
     end(null, {data: [best]});
   }
 }
@@ -86,7 +90,7 @@ export class Crawler extends BaseTask {
       if (err) {
         return end(err);
       }
-      end(null, {data});
+      end(null, {data, page: this.page});
     });
   }
 }
@@ -109,13 +113,14 @@ export default function main() {
   get quotes per ${nbQuotes} with ${nbWorkers} crawlers...
 `);
 
-  new Parallel({tasks: crawlers, field: 'data'}, sorter).run((err, results) => {
+  let flow = new Parallel({tasks: crawlers, field: 'data'}, sorter);
+  flow.run((err, results) => {
     if (err) {
       return console.error(`unexpected error: ${err.message}`);
     }
     let {data: [{fact, points: score}]=[]} = results;
     console.log(`
-  best fact found (${score} pts) :
+  best fact found (${score} pts) in ${flow.duration} ms:
 
   ${fact}
 
