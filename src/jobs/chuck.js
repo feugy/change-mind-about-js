@@ -99,7 +99,7 @@ export class Crawler extends BaseTask {
  */
 export default function main() {
   let sorter = new Sorter();
-  const nbWorkers = 100;
+  const nbWorkers = 20;
   let crawlers = Array.from(new Array(nbWorkers), (x, i) =>
     new Crawler({page: i+1, proxy: 'http://proxy-internet.localnet:3128'}, sorter)
   );

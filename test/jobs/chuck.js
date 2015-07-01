@@ -1,6 +1,8 @@
 import {expect} from 'chai';
 import job, {Sorter, Crawler} from '../../src/jobs/chuck';
 
+let proxy = 'http://proxy-internet.localnet:3128';
+
 describe('Chuck Norris\'s Job', () => {
 
   describe('Sorter', () => {
@@ -42,11 +44,11 @@ describe('Chuck Norris\'s Job', () => {
   describe('Crawler', () => {
 
     it('should be serialized into string', () => {
-      expect(new Crawler({page: 10}).toString()).to.equal('Crawler page 10');
+      expect(new Crawler({page: 10, proxy}).toString()).to.equal('Crawler page 10');
     });
 
     it('should handle API errors', done => {
-      new Crawler({page: -1}).run((err, results) => {
+      new Crawler({page: -1, proxy}).run((err, results) => {
         expect(err).to.exist.and.to.have.property('message').that.include('Invalid argument');
         expect(results).not.to.exist;
         done();
@@ -56,7 +58,7 @@ describe('Chuck Norris\'s Job', () => {
     it('should return a limited number of quotes', done => {
       let page = 1;
       let size = 2;
-      new Crawler({page, size}).run((err, results) => {
+      new Crawler({page, size, proxy}).run((err, results) => {
         expect(err).not.to.exist;
         expect(results).to.have.property('data').that.has.lengthOf(size);
         done();
