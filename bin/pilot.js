@@ -5,7 +5,7 @@ const main = async args => {
     console.error('please set a job name')
     process.exit(-1)
   }
-  const {default: run} = await import(`../lib/jobs/${args}`)
+  const { default: run } = await import(`../lib/jobs/${args}`)
   await run(args.slice(1))
 }
 

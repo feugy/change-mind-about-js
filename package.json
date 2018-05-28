@@ -1,21 +1,35 @@
 {
   "name": "change-mind-about-js",
-  "version": "1.0.0",
-  "description": "A conference about EcmaScript6 and what it can bring to developers",
-  "scripts": {
-    "test": "mocha -r esm -r test/setup --recursive"
-  },
+  "version": "2.0.0",
+  "description": "A conference about modern JavaScript code",
   "bin": {
     "pilot": "./bin/pilot.js"
   },
-  "devDependencies": {
-    "chai": "^4.1.2",
-    "chai-as-promised": "7.1.1",
-    "mocha": "^5.2.0"
+  "scripts": {
+    "lint": "eslint",
+    "precommit": "lint-staged",
+    "prettier": "prettier-eslint --write **/*.js",
+    "prettier:check": "prettier-eslint --list-different",
+    "test": "mocha -r esm -r test/setup --recursive"
   },
   "dependencies": {
     "esm": "^3.0.38",
     "html-entities": "^1.2.1",
     "request": "^2.87.0"
+  },
+  "devDependencies": {
+    "babel-eslint": "8.2.3",
+    "chai": "^4.1.2",
+    "chai-as-promised": "7.1.1",
+    "eslint": "^4.19.1",
+    "eslint-config-prettier": "^2.9.0",
+    "eslint-config-standard": "^11.0.0",
+    "eslint-plugin-import": "^2.11.0",
+    "eslint-plugin-node": "^6.0.1",
+    "eslint-plugin-promise": "^3.7.0",
+    "eslint-plugin-standard": "^3.1.0",
+    "lint-staged": "^7.1.2",
+    "mocha": "^5.2.0",
+    "prettier-eslint-cli": "4.7.1"
   }
 }
