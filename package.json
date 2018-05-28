@@ -3,24 +3,19 @@
   "version": "1.0.0",
   "description": "A conference about EcmaScript6 and what it can bring to developers",
   "scripts": {
-    "test": "gulp test"
+    "test": "mocha -r esm -r test/setup --recursive"
   },
   "bin": {
     "pilot": "./bin/pilot.js"
   },
   "devDependencies": {
-    "babel-core": "^5.1.2",
-    "chai": "^2.2.0",
-    "gulp": "^3.8.11",
-    "gulp-babel": "^5.1.0",
-    "gulp-mocha": "^2.0.1",
-    "gulp-sourcemaps": "^1.5.1",
-    "gulp-util": "^3.0.4",
-    "mocha": "^2.2.4"
+    "chai": "^4.1.2",
+    "chai-as-promised": "7.1.1",
+    "mocha": "^5.2.0"
   },
   "dependencies": {
-    "babel-runtime": "^5.1.2",
-    "html-entities": "^1.1.2",
-    "request": "^2.55.0"
+    "esm": "^3.0.38",
+    "html-entities": "^1.2.1",
+    "request": "^2.87.0"
   }
 }
