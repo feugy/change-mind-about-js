@@ -1,5 +1,7 @@
 import { expect } from 'chai'
-import { Task } from '../lib/task'
+import Task from '../lib/task'
+import { promisify } from 'util'
+const wait = promisify(setTimeout)
 
 describe('Task', () => {
   it('should be serialized into string', () => {
@@ -8,7 +10,9 @@ describe('Task', () => {
   })
 
   it('should throw an error when ran', async () => {
-    await expect(new Task().run({})).to.be.rejectedWith(Error)
+    const task = new Task()
+    await expect(task.run()).to.be.rejectedWith(Error)
+    expect(task.success).to.be.false
   })
 
   it('should have empty duration until started', () => {
@@ -33,6 +37,7 @@ describe('Task', () => {
   describe('with a simple subclass', () => {
     class Simple extends Task {
       async _execute (params) {
+        await wait(10)
         return params
       }
     }
@@ -48,7 +53,7 @@ describe('Task', () => {
     })
 
     it('should be ran without parameters', async () => {
-      expect(await new Simple().run()).to.be.undefined
+      expect(await new Simple().run()).to.deep.equal({})
     })
 
     it('should have a duration after being run', async () => {
@@ -81,6 +86,24 @@ describe('Task', () => {
       const [name1, name2, name3] = ['task 1', 'task 2', 'task 3']
       await new Serial(name1, new Serial(name2, new Serial(name3))).run(params)
       expect(params.order).to.deep.equals([name1, name2, name3])
+    })
+  })
+
+  describe('with a failing subclass', () => {
+    class Faulty extends Task {
+      async _execute () {
+        await wait(10)
+        throw new Error('Boom!')
+      }
+    }
+
+    it('should be catch error', async () => {
+      const task = new Faulty()
+      await expect(task.run()).to.be.rejectedWith('Boom!')
+      expect(task)
+        .to.have.property('duration')
+        .that.is.greaterThan(0)
+      expect(task).to.have.property('success').that.is.false
     })
   })
 })

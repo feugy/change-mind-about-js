@@ -1,6 +1,6 @@
 import { expect } from 'chai'
-import { Parallel } from '../lib/parallel'
-import { Task } from '../lib/task'
+import Parallel from '../lib/parallel'
+import Task from '../lib/task'
 import { promisify } from 'util'
 
 const wait = promisify(setTimeout)

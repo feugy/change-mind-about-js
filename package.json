@@ -3,7 +3,7 @@
   "version": "2.0.0",
   "description": "A conference about modern JavaScript code",
   "bin": {
-    "pilot": "./bin/pilot.js"
+    "run-job": "./bin/run-job.js"
   },
   "scripts": {
     "lint": "eslint",
@@ -18,9 +18,9 @@
     "request": "^2.87.0"
   },
   "devDependencies": {
-    "babel-eslint": "8.2.3",
+    "babel-eslint": "^8.2.3",
     "chai": "^4.1.2",
-    "chai-as-promised": "7.1.1",
+    "chai-as-promised": "^7.1.1",
     "eslint": "^4.19.1",
     "eslint-config-prettier": "^2.9.0",
     "eslint-config-standard": "^11.0.0",
@@ -30,6 +30,6 @@
     "eslint-plugin-standard": "^3.1.0",
     "lint-staged": "^7.1.2",
     "mocha": "^5.2.0",
-    "prettier-eslint-cli": "4.7.1"
+    "prettier-eslint-cli": "^4.7.1"
   }
 }
